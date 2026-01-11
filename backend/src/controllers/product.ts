@@ -4,7 +4,7 @@ import Product from '../models/product';
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const products = await Product.find();
-    res.status(200).send(products);
+    res.status(200).send({items: [...products], total: products.length });
   } catch (err) {
     res.status(500).send({ message: `Произошла ошибка ${err}` });
   }
@@ -17,5 +17,5 @@ export const createProduct = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).send({ message: `Произошла ошибка ${err}` });
   }
-}
+};
 
