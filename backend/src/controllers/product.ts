@@ -14,8 +14,12 @@ export const getProducts = async (_req: Request, res: Response, next: NextFuncti
 
 export const createProduct = async (req: Request<{}, {}, IProduct>, res: Response, next: NextFunction) => {
   try {
-    const { title, category, description, price, image } = req.body;
-    const product = await Product.create({ title, category, description, price, image });
+    const {
+      title, category, description, price, image,
+    } = req.body;
+    const product = await Product.create({
+      title, category, description, price, image,
+    });
     return res.status(201).send(product);
   } catch (err) {
     if (err instanceof MongooseError.ValidationError) {
