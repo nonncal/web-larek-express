@@ -6,7 +6,7 @@ import { BadRequestError } from '../errors';
 const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order = await Order.create(req.body);
-    return res.status(200).send(order);
+    return res.status(200).send({id: order._id, total: order.total});
   } catch (err) {
     if (err instanceof MongooseError.ValidationError) {
       return next(new BadRequestError('Ошибка валидации данных при создании заказа'));
