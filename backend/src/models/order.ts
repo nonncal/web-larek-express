@@ -1,6 +1,5 @@
-import mongoose from "mongoose";
-import './product'
-import { IProduct } from "./product";
+import mongoose from 'mongoose';
+import { IProduct } from './product';
 
 interface IOrder {
   payment: 'card' | 'online';
@@ -19,38 +18,38 @@ const orderSchema = new mongoose.Schema<IOrder>({
   },
   phone: {
     type: String,
-    required: true,
+    required: [true, 'Поле "phone" должно быть заполнено'],
   },
   address: {
     type: String,
-    required: true,
+    required: [true, 'Поле "address" должно быть заполнено'],
   },
   items: {
-    type: [{type: mongoose.Schema.Types.ObjectId, ref: 'product'}],
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'product' }],
     required: true,
     validate: {
-      validator: async function (items: mongoose.Schema.Types.ObjectId[]) {
+      async validator(items: mongoose.Schema.Types.ObjectId[]) {
         if (items.length === 0) return false;
         const products = await mongoose.model('product').find({ _id: { $in: items } });
         if (products.length !== items.length) return false;
-        return products.every(product => product.price !== null);
+        return products.every((product) => product.price !== null);
       },
-      message: "Ошибка валидации данных при создании товара",
-    }
+      message: 'Ошибка валидации данных при создании товара',
+    },
   },
   total: {
     type: Number,
     required: true,
     min: 0,
     validate: {
-      validator: async function (this: IOrder,total: number) {
+      async validator(this: IOrder, total: number) {
         const products = await mongoose.model('product').find({ _id: { $in: this.items } });
         const sum = products.reduce((acc: number, product: IProduct) => acc + (product.price || 0), 0);
         return sum === total;
       },
-      message: "Ошибка валидации данных при создании товара",
-    }
-  }
+      message: 'Ошибка валидации данных при создании товара',
+    },
+  },
 });
 
 export default mongoose.model<IOrder>('order', orderSchema);

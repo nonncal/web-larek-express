@@ -37,13 +37,15 @@
     ],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
-      "error",
+      "warn",
       {
         "args": "all",
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^_",
         "caughtErrorsIgnorePattern": "^_"
       }
-    ]
+    ],
+    "import/prefer-default-export": "warn",
+    "max-len": ["error", { "code": 150 }]
   }
 }

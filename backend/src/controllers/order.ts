@@ -1,19 +1,18 @@
-import { Request, Response } from "express";
-import Order from "../models/order";
-import { createOrderSchema } from "../validators/orderValidator";
+import { NextFunction, Request, Response } from 'express';
+import { Error as MongooseError } from 'mongoose';
+import Order from '../models/order';
+import { BadRequestError } from '../errors';
 
-export const createOrder = async (req: Request, res: Response) => {
-  const {error} = createOrderSchema.validate(req.body);
-
-  if (error) {
-    return res.status(400).send({ message: error.message });
-  }
-
+const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order = await Order.create(req.body);
-    res.status(200).send(order);
+    return res.status(200).send(order);
   } catch (err) {
-    res.status(500).send({ message: `Произошла ошибка ${err}` });
+    if (err instanceof MongooseError.ValidationError) {
+      return next(new BadRequestError('Ошибка валидации данных при создании заказа'));
+    }
+    return next(err);
   }
 };
 
+export default createOrder;
