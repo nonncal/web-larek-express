@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { IProduct } from './product';
 
-interface IOrder {
+export interface IOrder {
   payment: 'card' | 'online';
   email: string;
   phone: string;

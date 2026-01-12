@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Error as MongooseError } from 'mongoose';
-import Product from '../models/product';
+import Product, { IProduct } from '../models/product';
 import { BadRequestError, ConflictError } from '../errors';
 
 export const getProducts = async (_req: Request, res: Response, next: NextFunction) => {
@@ -12,9 +12,10 @@ export const getProducts = async (_req: Request, res: Response, next: NextFuncti
   }
 };
 
-export const createProduct = async (req: Request, res: Response, next: NextFunction) => {
+export const createProduct = async (req: Request<{}, {}, IProduct>, res: Response, next: NextFunction) => {
   try {
-    const product = await Product.create(req.body);
+    const { title, category, description, price, image } = req.body;
+    const product = await Product.create({ title, category, description, price, image });
     return res.status(201).send(product);
   } catch (err) {
     if (err instanceof MongooseError.ValidationError) {

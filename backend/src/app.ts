@@ -11,8 +11,8 @@ import { requestLogger, errorLogger } from "./middlewares/logger";
 
 const cors = require('cors');
 
-const {PORT} = process.env;
-const {DB_ADDRESS} = process.env;
+const {PORT = 3000} = process.env;
+const {DB_ADDRESS = 'mongodb://127.0.0.1:27017/weblarek'} = process.env;
 
 const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
