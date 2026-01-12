@@ -5,6 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "lint": "npx eslint src/**/*.ts",
+    "lint:fix": "npx eslint src/**/*.ts --fix",
     "build": "tsc",
     "dev": "npx nodemon -L src/app.ts ",
     "start": "ts-node src/app.ts",
@@ -26,8 +27,12 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "celebrate": "^15.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.19.2",
+    "express-winston": "^4.2.0",
     "mongoose": "^8.3.2",
-    "validator": "^13.11.0"
+    "winston": "^3.19.0"
   }
 }
